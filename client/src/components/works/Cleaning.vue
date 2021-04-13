@@ -9,12 +9,8 @@
 	#cnv {
 		position: absolute;
 		top: 50%;
-		left: 25%;
-		transform: translate(0, -50%);
-
-		@media (max-width: 768px) {
-			left: 5%;
-		}
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 </style>
 <script>

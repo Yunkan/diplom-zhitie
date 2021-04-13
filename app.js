@@ -30,42 +30,9 @@ app.use('/api/chat', require('./api/chat'));
 app.use('/api/userStats', require('./api/userStats'));
 app.use('/api/adventure', require('./api/adventure'));
 
-var users = [];
-
 io.sockets.on('connection', socket => {
 	socket.on('send message', data => {
 		socket.broadcast.emit('send message', { userId: data.userId, username: data.username, text: data.text, date: data.date });
-	});
-
-	socket.on('user join', data => {
-		data.x = ~~(Math.random() * 975) + 25;
-		data.y = ~~(Math.random() * 975) + 25;
-		users.push(data);
-
-		socket.emit('set user position', { enemies: users.filter(user => user._id !== data._id), player: data });
-	});
-
-	socket.on('set user position', data => {
-		users = users.map(user => {
-			if(user._id === data._id) {
-				user.x = data.x;
-				user.y = data.y;
-
-				return user;
-			} else {
-				return user;
-			}
-		});
-
-		socket.emit('set user position', { enemies: users.filter(user => user._id !== data._id), player: data });
-	});
-
-	socket.on('user leave', data => {
-		users = users.filter(user => user._id !== data._id);
-	});
-
-	socket.on('disconnect', data => {
-		users = users.filter(user => user._id !== data._id);
 	});
 });
 

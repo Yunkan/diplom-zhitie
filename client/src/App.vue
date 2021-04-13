@@ -114,10 +114,11 @@
         user-select: none;
 
         .mini-game-result {
+            width: 100%;
             color: #FF0000;
             position: absolute;
-            top: 2%;
-            left: 150px;
+            bottom: 0;
+            text-align: center;
 
             @media (max-width: 768px) {
                 font-size: 16px;

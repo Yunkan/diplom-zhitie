@@ -19,6 +19,7 @@
 		display: grid;
 		grid-template-columns: repeat(5, 75px);
 		justify-content: center;
+		margin-top: 100px;
 
 		@media (max-width: 376px) {
 			grid-template-columns: repeat(5, 50px);

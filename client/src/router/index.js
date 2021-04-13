@@ -38,14 +38,6 @@ const routes = [
         component: () => import('../views/Tavern.vue')
     },
     {
-        path: '/game',
-        name: 'Game',
-        meta: {
-            layout: 'main'
-        },
-        component: () => import('../views/Game.vue')
-    },
-    {
         path: "*",
         meta: {
             layout: 'main'
@@ -59,7 +51,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if ((to.name === 'Home' || to.name === 'Tavern' || to.name === 'Game') && !store.getters.getUser) next({ name: 'Login' })
+    if ((to.name === 'Home' || to.name === 'Tavern') && !store.getters.getUser) next({ name: 'Login' })
     else next();
 });
 
