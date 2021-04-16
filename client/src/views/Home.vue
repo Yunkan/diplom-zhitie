@@ -35,7 +35,6 @@
 		}
 	}
 
-
 	.main-actions {
 		@media (max-width: 376px) {
 			button {
