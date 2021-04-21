@@ -8,6 +8,12 @@
 <style lang="scss">
     body {
         font-family: 'Ruslan Display', cursive;
+        margin: 0;
+        padding: 0;
+        background-image: url('./assets/images/bg.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
     }
 
     input,
@@ -18,17 +24,6 @@
     }
 
     .container {
-        width: 100%;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        background-image: url('./assets/images/bg.jpg');
-        background-size: cover;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-
         .link {
             text-decoration: none;
             color: #0DD208;

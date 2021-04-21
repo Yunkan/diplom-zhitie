@@ -55,7 +55,8 @@ io.sockets.on('connection', socket => {
 	socket.on('user join', data => {
 		if(rooms.length === 0) {
 			rooms.push({
-				users: []
+				users: [],
+				stones: []
 			});
 		}
 
@@ -65,30 +66,45 @@ io.sockets.on('connection', socket => {
 			currentRoom.users.push(data);
 		} else {
 			currentRoom = {
-				users: [data]
+				users: [data],
+				stone: []
 			}
 
 			rooms.push(currentRoom);
 		}
 
-		socket.userId = data._id;
+		socket.userId = data.info._id;
 		socket.join(`room${rooms.indexOf(currentRoom)}`);
 
-		socket.emit('set user position', { enemies: currentRoom.users.filter(user => user._id !== data._id) });
+		socket.emit('set user position', { enemies: currentRoom.users.filter(user => user.info._id !== data.info._id) });
 	});
 
 	socket.on('set user position', data => {
-		const currentRoom = rooms.find(room => room.users.find(user => user._id === data._id));
+		const currentRoom = rooms.find(room => room.users.find(user => user.info._id === data.info._id));
 
 		if(currentRoom) {
-			const currentUser = currentRoom.users.find(user => user._id === data._id);
+			const currentUser = currentRoom.users.find(user => user.info._id === data.info._id);
 			currentUser.x = data.x;
 			currentUser.y = data.y;
 
 			socket.broadcast.to(`room${rooms.indexOf(currentRoom)}`).emit('set user position', {
-				enemies: currentRoom.users.filter(user => user._id === data._id)
+				enemies: currentRoom.users.filter(user => user.info._id === data.info._id)
 			});
 		}
+	});
+
+	socket.on('set stones position', data => {
+		data.forEach(stone => {
+			const currentRoom = rooms.find(room => room.users.find(user => user.info._id === stone.owner.info._id));
+
+			if(currentRoom) {
+				currentRoom.stones.push(stone);
+
+				socket.broadcast.to(`room${rooms.indexOf(currentRoom)}`).emit('set stones position', {
+					stones: currentRoom.stones
+				});
+			}
+		});
 	});
 
 	socket.on('user leave', data => {
