@@ -28,7 +28,7 @@ router.post('/update', async (req, res) => {
 
 		await User.findOneAndUpdate({ _id: userId }, updatingStat);
 
-		const updatedUser = await User.findById(userId)
+		const updatedUser = await User.findById(userId);
 
 		res.json({ user: updatedUser });
 	} catch(e) {
@@ -36,11 +36,29 @@ router.post('/update', async (req, res) => {
 	}
 });
 
-router.get('/showAllUsers', async (rea, res) => {
+router.get('/showAllUsers', async (req, res) => {
 	try {
 		const users = await User.find({}).sort('-rating').limit(10);
 
 		res.json({ users });
+	} catch(e) {
+		res.status(500).json({ message: 'Что-то пошло не так', e: e.message });
+	}
+});
+
+router.get('/reborne/:id', async (req, res) => {
+	try {
+		await User.findOneAndUpdate({ _id: req.params.id }, {
+			health: 100,
+			starve: 100,
+			stamina: 100,
+			money: 0,
+			rating: 0,
+		});
+
+		const user = await User.findById(req.params.id);
+
+		res.json({ user });
 	} catch(e) {
 		res.status(500).json({ message: 'Что-то пошло не так', e: e.message });
 	}

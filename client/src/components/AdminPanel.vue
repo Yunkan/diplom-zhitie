@@ -39,17 +39,10 @@ const PrimaryButton = () => import('./PrimaryButton.vue');
 const AdminAdventures = () => import('./AdminAdventures.vue');
 export default {
 	name: 'AdminPanel',
-	data() {
-		return {
-			user: this.$store.getters.getUser
-		}
-	},
 	methods: {
 		async addStat(stats) {
-			if(this.user.role === 'admin') {
-				await this.$store.dispatch('userStat', stats);
-				bus.$emit('refresh feels', this.$store.getters.getUser);
-			}
+			await this.$store.dispatch('userStat', stats);
+			bus.$emit('refresh feels', this.$store.getters.getUser);
 		}
 	},
 	components: {

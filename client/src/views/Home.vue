@@ -4,7 +4,7 @@
 			Меня зовут "{{ user.username }}"
 		</h1>
 
-		<div class="status-bar">{{ status }}</div>
+		<div class="status-bar" :style="{ color: status.color }">{{ status.text }}</div>
 
 		<div class="main-actions">
 			<PrimaryButton title="Начать приключение(100 м.)" v-on:click="startAdventure"></PrimaryButton>
@@ -50,7 +50,6 @@
 
 	.status-bar {
 		text-align: center;
-		color: #AC1111;
 		font-size: 20px;
 	}
 </style>
@@ -64,7 +63,10 @@ export default {
 		return {
 			user: this.$store.getters.getUser,
 			adventure: null,
-			status: ''
+			status: {
+				text: '',
+				color: ''
+			}
 		}
 	},
 	created() {
@@ -99,7 +101,8 @@ export default {
 		},
 		async stealApples() {
 			if(~~(Math.random() * 100) <= 75) {
-				this.status = '';
+				this.status.text = 'Успех!';
+				this.status.color = '#0f0';
 				await this.$store.dispatch('userStat', [
 					{ name: 'starve', value: 10 },
 					{ name: 'stamina', value: -3 },
@@ -107,8 +110,8 @@ export default {
 				]);
 				bus.$emit('refresh feels', this.$store.getters.getUser);
 			} else {
-				this.status = 'Вас поймали!';
-				setTimeout(() => this.status = '', 5000);
+				this.status.text = 'Вас поймали!';
+				this.status.color = '#f00';
 				await this.$store.dispatch('userStat', [
 					{ name: 'starve', value: -3 },
 					{ name: 'stamina', value: -3 },
@@ -117,10 +120,13 @@ export default {
 				]);
 				bus.$emit('refresh feels', this.$store.getters.getUser);
 			}
+
+			setTimeout(() => this.status.text = '', 5000);
 		},
 		async freeWork() {
 			if(~~(Math.random() * 100) <= 75) {
-				this.status = '';
+				this.status.text = 'Успех!';
+				this.status.color = '#0f0';
 				await this.$store.dispatch('userStat', [
 					{ name: 'money', value: 1 },
 					{ name: 'starve', value: -2 },
@@ -129,8 +135,8 @@ export default {
 				]);
 				bus.$emit('refresh feels', this.$store.getters.getUser);
 			} else {
-				this.status = 'Вас прогнали!';
-				setTimeout(() => this.status = '', 5000);
+				this.status.text = 'Вас прогнали!';
+				this.status.color = '#f00';
 				await this.$store.dispatch('userStat', [
 					{ name: 'starve', value: -2 },
 					{ name: 'stamina', value: -2 },
@@ -138,6 +144,8 @@ export default {
 				]);
 				bus.$emit('refresh feels', this.$store.getters.getUser);
 			}
+
+			setTimeout(() => this.status.text = '', 5000);
 		}
 	},
 	components: {

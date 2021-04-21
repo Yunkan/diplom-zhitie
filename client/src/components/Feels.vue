@@ -13,6 +13,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		user-select: none;
 
 		@media (max-width: 768px) {
 			h2 {

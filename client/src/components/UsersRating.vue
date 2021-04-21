@@ -11,6 +11,7 @@
 		display: flex;
 		flex-flow: column wrap;
 		align-items: center;
+		user-select: none;
 
 		@media (max-width: 768px) {
 			h2 {

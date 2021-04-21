@@ -5,7 +5,6 @@
 		<div class="navbar">
 			<router-link class="nav-link" active-class="active" to="/" exact>Главная</router-link>
 			<router-link class="nav-link" active-class="active" to="/tavern" exact>Таверна</router-link>
-			<router-link class="nav-link" active-class="active" to="/game" exact>Поле боя</router-link>
 			<PrimaryButton title="Выйти" v-on:click="logout"></PrimaryButton>
 		</div>
 	</div>

@@ -120,6 +120,15 @@
             }
         }
     }
+
+    .game-over-container {
+        width: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+    }
 </style>
 <script>
 const MainLayout = () => import('@/views/layouts/MainLayout');
