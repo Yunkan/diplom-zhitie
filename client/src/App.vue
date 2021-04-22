@@ -1,7 +1,9 @@
 <template>
     <div id="app">
-        <component :is="layout">
+        <component v-if="!this.$store.getters.getUser || this.$store.getters.getUser.role !== 'banned'" :is="layout">
             <router-view />
+        </component>
+        <component v-else is="banned-layout">
         </component>
     </div>
 </template>
@@ -133,6 +135,7 @@
 <script>
 const MainLayout = () => import('@/views/layouts/MainLayout');
 const EmptyLayout = () => import('@/views/layouts/EmptyLayout');
+const BannedLayout = () => import('@/views/layouts/BannedLayout');
 
 export default {
     computed:{
@@ -143,7 +146,7 @@ export default {
         }
     },
     components: {
-        MainLayout, EmptyLayout
+        MainLayout, EmptyLayout, BannedLayout
     }
 }
 </script>

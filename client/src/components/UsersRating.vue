@@ -47,7 +47,7 @@ export default {
 		}
 	},
 	async created() {
-		this.users = await this.$store.dispatch('showAllUsers');
+		this.users = await this.$store.dispatch('showAllUsers', 10);
 	}
 }
 </script>

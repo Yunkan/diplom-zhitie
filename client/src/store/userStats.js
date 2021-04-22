@@ -25,10 +25,19 @@ export default {
 				throw e;
 			}
 		},
-		async showAllUsers() {
+		async showAllUsers({ commit }, limit) {
 			try {
-				const users = await axios.get('/api/userStats/showAllUsers');
+				if(!limit)
+					limit = 0;
+				const users = await axios.get(`/api/userStats/showAllUsers/${limit}`);
 				return users.data.users;
+			} catch(e) {
+				throw e;
+			}
+		},
+		async changeRole({ commit }, { id, role }) {
+			try {
+				await axios.post('/api/userStats/changeRole', { id, role });
 			} catch(e) {
 				throw e;
 			}

@@ -11,6 +11,8 @@
 				<PrimaryButton title="Сбросить рейтинг" v-on:click="addStat([{ name: 'rating', value: -user.rating }])"></PrimaryButton>
 			</div>
 			<AdminAdventures></AdminAdventures>
+			<h2>Список людей</h2>
+			<AdminModering></AdminModering>
 		</div>
 </template>
 <style lang="scss">
@@ -37,6 +39,7 @@
 import { bus } from '../main.js';
 const PrimaryButton = () => import('./PrimaryButton.vue');
 const AdminAdventures = () => import('./AdminAdventures.vue');
+const AdminModering = () => import('./AdminModering.vue');
 export default {
 	name: 'AdminPanel',
 	methods: {
@@ -46,7 +49,7 @@ export default {
 		}
 	},
 	components: {
-		PrimaryButton, AdminAdventures
+		PrimaryButton, AdminAdventures, AdminModering
 	}
 }
 </script>

@@ -36,9 +36,9 @@ router.post('/update', async (req, res) => {
 	}
 });
 
-router.get('/showAllUsers', async (req, res) => {
+router.get('/showAllUsers/:limit', async (req, res) => {
 	try {
-		const users = await User.find({}).sort('-rating').limit(10);
+		const users = await User.find({}).sort('-rating').limit(+req.params.limit);
 
 		res.json({ users });
 	} catch(e) {
@@ -59,6 +59,16 @@ router.get('/reborne/:id', async (req, res) => {
 		const user = await User.findById(req.params.id);
 
 		res.json({ user });
+	} catch(e) {
+		res.status(500).json({ message: 'Что-то пошло не так', e: e.message });
+	}
+});
+
+router.post('/changeRole', async (req, res) => {
+	try {
+		await User.findOneAndUpdate({ _id: req.body.id }, { role: req.body.role });
+
+		res.end();
 	} catch(e) {
 		res.status(500).json({ message: 'Что-то пошло не так', e: e.message });
 	}
