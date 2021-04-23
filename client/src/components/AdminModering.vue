@@ -1,6 +1,10 @@
 <template>
 	<div class="admin-modering-container">
-		<div class="user" v-for="user in users">
+		<input type="text" class="users-search" placeholder="Поиск" v-model="searching">
+		<div
+			class="user"
+			v-for="user in users"
+			:style="{ display: user.username.toLowerCase().indexOf(searching.toLowerCase()) >= 0 ? 'block' : 'none' }">
 			<span class="user-name">Имя: {{ user.username }},</span>
 			<span class="user-role">
 				Роль: <select class="user-role" v-model="user.changedRole">
@@ -18,6 +22,11 @@
 		background-color: #fff;
 		max-height: 400px;
 		overflow: auto;
+
+		.users-search {
+			width: 80%;
+			padding: 0.5em 1em;
+		}
 
 		.user {
 			margin: 1em;
@@ -44,7 +53,8 @@ export default {
 				'admin',
 				'user',
 				'banned'
-			]
+			],
+			searching: ''
 		}
 	},
 	async created() {
