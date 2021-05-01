@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Vue from 'vue';
+import { bus } from '../main.js';
 
 export default {
 	actions: {
@@ -11,16 +12,14 @@ export default {
 					user = await axios.get(`api/userStats/reborne/${this.getters.getUser._id}`); 
 					const gameOver = document.createElement('div');
 					gameOver.classList.add('game-over-container');
-					gameOver.addEventListener('click', () => {
-						gameOver.remove();
-					});
 					gameOver.innerHTML = `\
 							<h1>Вы умерли!</h1>\
-							<button class="primary-button">Понимаю</button>\
+							<button class="primary-button" onclick="document.querySelector('.game-over-container').remove()">Понимаю</button>\
 						`;
 					document.querySelector('.split-container').appendChild(gameOver);
 				}
 				commit('setUser', user.data.user);
+				bus.$emit('refresh feels', this.getters.getUser);
 			} catch(e) {
 				throw e;
 			}

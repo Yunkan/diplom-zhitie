@@ -119,8 +119,8 @@ const PrimaryButton = () => import('./PrimaryButton.vue');
 export default {
 	name: 'Navbar',
 	methods: {
-		async logout() {
-			await this.$store.dispatch('logout');
+		logout() {
+			this.$store.commit('removeUser');
 			this.$router.push('/login');
 		}
 	},

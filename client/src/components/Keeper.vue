@@ -89,7 +89,6 @@
 	}
 </style>
 <script>
-import { bus } from '../main.js';
 const PrimaryButton = () => import("./PrimaryButton.vue");
 export default {
 	name: "Keeper",
@@ -103,7 +102,6 @@ export default {
 			const cost = stats.find(stat => stat.name === 'money');
 			if(this.user.money >= Math.abs(cost.value)) {
 				await this.$store.dispatch('userStat', stats);
-				bus.$emit('refresh feels', this.$store.getters.getUser);
 			}
 		}
 	},

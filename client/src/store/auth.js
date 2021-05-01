@@ -16,14 +16,6 @@ export default {
 			} catch(e) {
 				throw e;
 			}
-		},
-		async logout({ commit }) {
-			try	{
-				await axios.get('/api/auth/logout');
-				commit('removeUser');
-			} catch(e) {
-				throw e;
-			}
 		}
 	}
 }

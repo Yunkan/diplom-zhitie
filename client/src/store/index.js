@@ -5,6 +5,7 @@ import auth from './auth';
 import chat from './chat';
 import userStats from './userStats';
 import adventure from './adventure';
+import games from './games';
 
 Vue.use(Vuex);
 
@@ -33,6 +34,6 @@ export default new Vuex.Store({
 		getMessages: state => state.messages
 	},
 	modules: {
-		auth, chat, userStats, adventure
+		auth, chat, userStats, adventure, games
 	}
 });

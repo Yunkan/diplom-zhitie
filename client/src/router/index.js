@@ -38,6 +38,14 @@ const routes = [
         component: () => import('../views/Tavern.vue')
     },
     {
+        path: '/game/:id',
+        name: 'Game',
+        meta: {
+            layout: 'main'
+        },
+        component: () => import('../views/Game.vue')
+    },
+    {
         path: "*",
         meta: {
             layout: 'empty'

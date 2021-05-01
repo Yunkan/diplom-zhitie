@@ -88,26 +88,10 @@ router.post(
 	      return res.status(400).json({ message: 'Неверный пароль' })
 	    }
 
-	    req.session.user = {
-	    	_id: user._id,
-	    	username: user.username,
-	    	health: user.health,
-	    	starve: user.starve,
-	    	stamina: user.stamina,
-	    	money: user.money,
-	    	role: user.role,
-	    	rating: user.rating
-	    };
-
-	    res.status(200).json({ user: req.session.user });
+	    res.status(200).json({ user });
 	} catch(e) {
 		res.status(500).json({ message: 'Что-то пошло не так' });
 	}
-});
-
-router.get('/logout', (req, res) => {
-	req.session.destroy();
-	res.status(200).json({ message: 'Пользователь вышел' });
 });
 
 module.exports = router;

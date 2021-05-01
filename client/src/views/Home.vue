@@ -80,7 +80,6 @@ export default {
 			]
 
 			await this.$store.dispatch('userStat', stats);
-			bus.$emit('refresh feels', this.$store.getters.getUser);
 			this.adventure = null;
 			document.querySelector(".container").style.overflow = 'auto';
 		});
@@ -89,7 +88,6 @@ export default {
 		async startAdventure() {
 			if(this.$store.getters.getUser.money >= 100) {
 				await this.$store.dispatch('userStat', [{ name: 'money', value: -100 }]);
-				bus.$emit('refresh feels', this.$store.getters.getUser);
 				this.adventure = await this.$store.dispatch('showAdventure');
 				window.scrollBy(0, 0);
 				document.querySelector(".container").style.overflow = 'hidden';
@@ -97,7 +95,6 @@ export default {
 		},
 		async freeService(stats) {
 			await this.$store.dispatch('userStat', stats);
-			bus.$emit('refresh feels', this.$store.getters.getUser);
 		},
 		async stealApples() {
 			if(~~(Math.random() * 100) <= 75) {
@@ -108,7 +105,6 @@ export default {
 					{ name: 'stamina', value: -3 },
 					{ name: 'rating', value: -1 },
 				]);
-				bus.$emit('refresh feels', this.$store.getters.getUser);
 			} else {
 				this.status.text = 'Вас поймали!';
 				this.status.color = '#f00';
@@ -118,7 +114,6 @@ export default {
 					{ name: 'rating', value: -1 },
 					{ name: 'health', value: -3 },
 				]);
-				bus.$emit('refresh feels', this.$store.getters.getUser);
 			}
 
 			setTimeout(() => this.status.text = '', 5000);
@@ -133,7 +128,6 @@ export default {
 					{ name: 'stamina', value: -2 },
 					{ name: 'rating', value: -1 },
 				]);
-				bus.$emit('refresh feels', this.$store.getters.getUser);
 			} else {
 				this.status.text = 'Вас прогнали!';
 				this.status.color = '#f00';
@@ -142,7 +136,6 @@ export default {
 					{ name: 'stamina', value: -2 },
 					{ name: 'rating', value: -1 },
 				]);
-				bus.$emit('refresh feels', this.$store.getters.getUser);
 			}
 
 			setTimeout(() => this.status.text = '', 5000);

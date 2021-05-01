@@ -3,8 +3,9 @@
 		<h1>Добро пожаловать!</h1>
 		<div class="tavern-menu">
 			<span class="select-btn" :class="{ selected: selected == 'keeper' }" @click="selectHandler('keeper')">Трактирщик</span>
-			<span class="select-btn" :class="{ selected: selected == 'work' }" @click="selectHandler('work')">Работа</span>
+			<span class="select-btn" :class="{ selected: selected == 'work' }" @click="selectHandler('work')">Вкалывать</span>
 			<span class="select-btn" :class="{ selected: selected == 'chat' }" @click="selectHandler('chat')">Болтовня</span>
+			<span class="select-btn" :class="{ selected: selected == 'games' }" @click="selectHandler('games')">Игрища</span>
 		</div>
 		<div class="keeper" :class="{ show: selected == 'keeper' }">
 			<Keeper></Keeper>
@@ -17,9 +18,17 @@
 		<div class="work" :class="{ show: selected == 'work' }">
 			<Work></Work>
 		</div>
+		<div class="games" :class="{ show: selected == 'games' }">
+			<Games></Games>
+		</div>
 	</div>
 </template>
 <style lang="scss">
+	.tavern-menu {
+		display: flex;
+		flex-flow: row wrap;
+	}
+
 	h1 {
 		@media (max-width: 376px) {
 			font-size: 18px;
@@ -68,7 +77,8 @@
 
 	.keeper,
 	.work,
-	.chat {
+	.chat,
+	.games {
 		width: 100%;
 		height: 0;
 		padding: 0;
@@ -86,6 +96,7 @@ import VueCookies from 'vue-cookies';
 const Chat = () => import('@/components/Chat');
 const Keeper = () => import('@/components/Keeper');
 const Work = () => import('@/components/Work');
+const Games = () => import('@/components/Games');
 
 export default {
 	data() {
@@ -100,7 +111,7 @@ export default {
 		}
 	},
 	components: {
-		Chat, Keeper, Work
+		Chat, Keeper, Work, Games
 	}
 }
 </script>

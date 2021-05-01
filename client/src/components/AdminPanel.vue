@@ -45,7 +45,6 @@ export default {
 	methods: {
 		async addStat(stats) {
 			await this.$store.dispatch('userStat', stats);
-			bus.$emit('refresh feels', this.$store.getters.getUser);
 		}
 	},
 	components: {

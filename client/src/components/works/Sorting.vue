@@ -125,7 +125,6 @@ export default {
 					{ name: 'money', value: 3 }
 				];
 				await this.$store.dispatch('userStat', stats);
-				bus.$emit('refresh feels', this.$store.getters.getUser);
 				this.setTable();
 			} else {
 				this.sortingResult = 'Неправильно!';
