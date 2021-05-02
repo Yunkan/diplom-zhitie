@@ -9,7 +9,7 @@
 </template>
 <style lang="scss">
     body {
-        font-family: 'Ruslan Display', cursive;
+        font-family: 'Lobster', cursive;
         margin: 0;
         padding: 0;
         background-image: url('./assets/images/bg.jpg');
@@ -21,7 +21,7 @@
     input,
     textarea,
     button {
-        font-family: 'Ruslan Display', cursive;
+        font-family: 'Lobster', cursive;
         outline: none;
     }
 

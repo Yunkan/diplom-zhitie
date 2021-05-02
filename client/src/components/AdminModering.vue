@@ -4,8 +4,9 @@
 		<div
 			class="user"
 			v-for="user in users"
-			:style="{ display: user.username.toLowerCase().indexOf(searching.toLowerCase()) >= 0 ? 'block' : 'none' }">
-			<span class="user-name">Имя: {{ user.username }},</span>
+			:style="{ display: user.username.toLowerCase().indexOf(searching.toLowerCase()) >= 0 || user.email.toLowerCase().indexOf(searching.toLowerCase()) >= 0 ? 'block' : 'none' }">
+			<span class="user-name">Имя: {{ user.username }}, </span>
+			<span class="user-email">Почта: {{ user.email }}, </span>
 			<span class="user-role">
 				Роль: <select class="user-role" v-model="user.changedRole">
 					<option v-for="role in roles">{{ role }}</option>

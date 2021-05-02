@@ -70,16 +70,7 @@ export default {
 		}
 	},
 	created() {
-		bus.$on('end adventure', async (adventure) => {
-			const stats = [
-				{ name: 'health', value: adventure.health },
-				{ name: 'starve', value: adventure.starve },
-				{ name: 'stamina', value: adventure.stamina },
-				{ name: 'money', value: adventure.money },
-				{ name: 'rating', value: adventure.rating },
-			]
-
-			await this.$store.dispatch('userStat', stats);
+		bus.$on('end adventure', (adventure) => {
 			this.adventure = null;
 			document.querySelector(".container").style.overflow = 'auto';
 		});

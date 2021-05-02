@@ -7,7 +7,7 @@
 				<div class="modal">
 					<h1>{{ result.title }}</h1>
 					<div v-for="stat in result.stats">{{ statTranslate(stat.name) }}: {{ stat.value }}</div>
-					<PrimaryButton title="Понимаю" v-on:click="goHome"></PrimaryButton>
+					<PrimaryButton title="Понимаю" v-on:click="goBack"></PrimaryButton>
 				</div>
 			</div>
 		</div>
@@ -76,8 +76,8 @@ export default {
 		this.$socket.client.emit('user leave', this.$store.getters.getUser);
 	},
 	methods: {
-		goHome() {
-			this.$router.push('/');
+		goBack() {
+			this.$router.push('/tavern');
 		},
 		statTranslate(stat) {
 			switch(stat) {

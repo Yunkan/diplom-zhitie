@@ -67,6 +67,16 @@ export default {
 		}
 	},
 	async created() {
+		const stats = [
+				{ name: 'health', value: this.$props.adventure.health },
+				{ name: 'starve', value: this.$props.adventure.starve },
+				{ name: 'stamina', value: this.$props.adventure.stamina },
+				{ name: 'money', value: this.$props.adventure.money },
+				{ name: 'rating', value: this.$props.adventure.rating },
+			]
+
+		await this.$store.dispatch('userStat', stats);
+		
 		function writeText(i) {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => resolve(i), 25);
