@@ -16,8 +16,8 @@
 		<div class="fistFight-interface">
 			<PrimaryButton title="Втащить в тело" v-on:click="hitInBody"></PrimaryButton>
 			<PrimaryButton title="Втащить в голову" v-on:click="hitInHead"></PrimaryButton>
-			<PrimaryButton title="Защитить тело" v-on:click="defBody"></PrimaryButton>
-			<PrimaryButton title="Защитить голову" v-on:click="defHead"></PrimaryButton>
+			<PrimaryButton title="Защитить тело" v-on:click="defBodyTarget('body')"></PrimaryButton>
+			<PrimaryButton title="Защитить голову" v-on:click="defBodyTarget('head')"></PrimaryButton>
 		</div>
 	</div>
 </template>
@@ -56,9 +56,9 @@ export default {
 				...this.initialUsers,
 				def: ''
 			},
-			turn: this.$store.getters.getUser._id === this.initialUsers[0]._id ? true : false,
 			game: {
-				info: ''
+				info: '',
+				turn: this.initialUsers[0]._id
 			}
 		}
 	},
@@ -91,7 +91,6 @@ export default {
 			this.users = data.users;
 			if(data.game)
 				this.game = data.game;
-			this.turn = !this.turn;
 		});
 		this.$socket.client.on('fistFight end', data => {
 			let stats = [];
@@ -120,24 +119,22 @@ export default {
 		});
 	},
 	methods: {
+		myTurn() {
+			return (this.$store.getters.getUser._id === this.game.turn);
+		},
 		hitInBody() {
-			if(this.turn) {
+			if(this.myTurn()) {
 				this.$socket.client.emit('fistFight hitInBody', this.$store.getters.getUser);
 			}
 		},
 		hitInHead() {
-			if(this.turn) {
+			if(this.myTurn()) {
 				this.$socket.client.emit('fistFight hitInHead', this.$store.getters.getUser);
 			}
 		},
-		defBody() {
-			if(this.turn) {
-				this.$socket.client.emit('fistFight defBody', this.$store.getters.getUser);
-			}
-		},
-		defHead() {
-			if(this.turn) {
-				this.$socket.client.emit('fistFight defHead', this.$store.getters.getUser);
+		defBodyTarget(target) {
+			if(this.myTurn()) {
+				this.$socket.client.emit('fistFight defBodyTarget', { user: this.$store.getters.getUser, target });
 			}
 		}
 	},

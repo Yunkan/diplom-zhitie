@@ -56,8 +56,6 @@ io.sockets.on('connection', socket => {
 							io.sockets.emit('remove game', currentRoom);
 						}
 					}
-				} else {
-					socket.emit('refresh user', { users: currentRoom.users, game });
 				}
 			} else {
 				rooms.push({
@@ -106,11 +104,37 @@ io.sockets.on('connection', socket => {
 		}
 	});
 
-	function checkWin(io, room, user, enemy) {
+	function checkWin(room, user, enemy) {
 		if(enemy.breath <= 0) {
 			room.gameStart = false;
 			io.sockets.to(`room${room.name}`).emit('fistFight end', { winner: user });
 		}
+	}
+
+	function fistFightHit(currentUser, enemyUser, damage, selfDamage, target, currentRoom) {
+		let translateTarget = '';
+		switch(target) {
+			case 'body':
+				translateTarget = 'тело';
+				break;
+			case 'head':
+				translateTarget = 'голову';
+				break;
+		}
+
+		if(enemyUser.def != target) {
+			enemyUser.breath -= damage;
+			currentUser.breath -= selfDamage;
+			currentRoom.game.info = `${currentUser.username} ударил в ${translateTarget} ${enemyUser.username}, нанося ${damage} едениц урона!`;
+		} else {
+			currentUser.breath -= selfDamage;
+			currentRoom.game.info = `${enemyUser.username} заблокировал удар!`;
+		}
+		enemyUser.def = '';
+		currentRoom.game.turn = enemyUser._id;
+
+		checkWin(currentRoom, currentUser, enemyUser);
+		io.sockets.to(`room${currentRoom.name}`).emit('fistFight refresh', { users: currentRoom.users, game: currentRoom.game });
 	}
 
 	socket.on('fistFight hitInBody', data => {
@@ -123,18 +147,7 @@ io.sockets.on('connection', socket => {
 			const damage = ~~(Math.random() * 10 + 5);
 			const selfDamage = ~~(damage / 3);
 
-			if(enemyUser.def != 'body') {
-				enemyUser.breath -= damage;
-				currentUser.breath -= selfDamage;
-				currentRoom.game.info = `${currentUser.username} ударил в тело ${enemyUser.username}, нанося ${damage} едениц урона!`;
-			} else {
-				currentUser.breath -= selfDamage;
-				currentRoom.game.info = `${enemyUser.username} заблокировал удар!`;
-			}
-			enemyUser.def = '';
-
-			checkWin(io, currentRoom, currentUser, enemyUser);
-			io.sockets.to(`room${currentRoom.name}`).emit('fistFight refresh', { users: currentRoom.users, game: currentRoom.game });
+			fistFightHit(currentUser, enemyUser, damage, selfDamage, 'body', currentRoom);
 		}
 	});
 
@@ -147,43 +160,22 @@ io.sockets.on('connection', socket => {
 
 			const damage = ~~(Math.random() * 15 + 8);
 			const selfDamage = ~~(damage / 3);
-			if(enemyUser.def != 'head') {
-				enemyUser.breath -= damage;
-				currentUser.breath -= selfDamage;
-				currentRoom.game.info = `${currentUser.username} ударил в голову ${enemyUser.username}, нанося ${damage} едениц урона!`;
-			} else {
-				currentUser.breath -= selfDamage;
-				currentRoom.game.info = `${enemyUser.username} заблокировал удар!`;
-			}
-			enemyUser.def = '';
 
-			checkWin(io, currentRoom, currentUser, enemyUser);
-			io.sockets.to(`room${currentRoom.name}`).emit('fistFight refresh', { users: currentRoom.users, game: currentRoom.game });
+			fistFightHit(currentUser, enemyUser, damage, selfDamage, 'head', currentRoom);
 		}
 	});
 
-	socket.on('fistFight defBody', data => {
-		const currentRoom = rooms.find(room => room.users.find(user => user._id === data._id));
+	socket.on('fistFight defBodyTarget', data => {
+		const currentRoom = rooms.find(room => room.users.find(user => user._id === data.user._id));
 
 		if(currentRoom) {
-			const currentUser = currentRoom.users.find(user => user._id === data._id);
+			const currentUser = currentRoom.users.find(user => user._id === data.user._id);
+			const enemyUser = currentRoom.users.find(user => user._id !== data.user._id);
 
-			currentUser.def = 'body';
-
+			currentUser.def = data.target;
+			currentRoom.game.turn = enemyUser._id;
 			currentRoom.game.info = `${currentUser.username} защищается!`;
-			io.sockets.to(`room${currentRoom.name}`).emit('fistFight refresh', { users: currentRoom.users, game: currentRoom.game });
-		}
-	});
 
-	socket.on('fistFight defHead', data => {
-		const currentRoom = rooms.find(room => room.users.find(user => user._id === data._id));
-
-		if(currentRoom) {
-			const currentUser = currentRoom.users.find(user => user._id === data._id);
-
-			currentUser.def = 'head';
-
-			currentRoom.game.info = `${currentUser.username} защищается!`;
 			io.sockets.to(`room${currentRoom.name}`).emit('fistFight refresh', { users: currentRoom.users, game: currentRoom.game });
 		}
 	});

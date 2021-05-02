@@ -10,6 +10,15 @@
 				
 				<router-view />
 			</div>
+			<Footer></Footer>
+			<div class="game-over-container" v-if="dead">
+				<div class="overlay">
+					<div class="text-container">
+						<h1>Вы умерли!</h1>
+						<PrimaryButton title="Понимаю" v-on:click="acceptDeath"></PrimaryButton>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -24,15 +33,62 @@
 			border-right: 2px solid darken(#803F06, 15%);
 		}
 	}
+
+    .game-over-container {
+    	width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+
+    	.overlay {
+    		width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, .5);
+
+			.text-container {
+				position: absolute;
+				padding: 1em 5em;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background-color: #B36A3E;
+			}
+    	}
+    }
 </style>
 <script>
+import { bus } from '../../main.js';
 const Navbar = () => import('@/components/Navbar.vue');
 const Feels = () => import('@/components/Feels.vue');
 const UsersRating = () => import('@/components/UsersRating.vue');
+const Footer = () => import('@/components/Footer.vue');
+const PrimaryButton = () => import('@/components/PrimaryButton.vue');
 
 export default {
+	data() {
+		return {
+			dead: false
+		}
+	},
+	created() {
+		bus.$on('dead', data => {
+			if(data === this.$store.getters.getUser._id) {
+				this.dead = true;
+				document.body.style.overflow = 'hidden';
+			}
+		});
+	},
+	methods: {
+		acceptDeath() {
+			this.dead = false;
+			document.body.style.overflow = 'auto';
+		}
+	},
 	components: {
-		Navbar, Feels, UsersRating
+		Navbar, Feels, UsersRating, Footer, PrimaryButton
 	}
 }
 </script>
