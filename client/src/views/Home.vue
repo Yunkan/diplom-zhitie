@@ -72,7 +72,6 @@ export default {
 	created() {
 		bus.$on('end adventure', (adventure) => {
 			this.adventure = null;
-			document.querySelector(".container").style.overflow = 'auto';
 		});
 	},
 	methods: {
@@ -80,8 +79,6 @@ export default {
 			if(this.$store.getters.getUser.money >= 100) {
 				await this.$store.dispatch('userStat', [{ name: 'money', value: -100 }]);
 				this.adventure = await this.$store.dispatch('showAdventure');
-				window.scrollBy(0, 0);
-				document.querySelector(".container").style.overflow = 'hidden';
 			}
 		},
 		async freeService(stats) {

@@ -22,12 +22,18 @@
 		margin-top: 1em;
 		border-top: 2px solid darken(#803F06, 15%);
 
+		@media (max-width: 768px) {
+			flex-direction: column;
+		}
+
 		.info {
+			margin: 1em;
 			font-size: .75rem;
 			border-bottom: 1px solid #000;
 		}
 
 		.socials {
+			margin: 1em;
 			display: flex;
 			flex-direction: column;
 

@@ -48,6 +48,7 @@ io.sockets.on('connection', socket => {
 				if(!currentUser) {
 					if(currentRoom.users.length < 2) {
 						currentRoom.users.push(data.user);
+						currentRoom.gameStart = true;
 						await Game.findOneAndUpdate({ _id: game._id }, { userAmount: currentRoom.users.length });
 						socket.join(`room${game._id}`);
 						io.sockets.to(`room${game._id}`).emit('refresh user', { users: currentRoom.users, game });
@@ -98,13 +99,12 @@ io.sockets.on('connection', socket => {
 			const currentUser = currentRoom.users.find(user => user._id === data._id);
 			if(!currentUser.breath) {
 				currentUser.breath = 100;
-				currentRoom.gameStart = true;
 				io.sockets.to(`room${currentRoom.name}`).emit('fistFight refresh', { users: currentRoom.users });
 			}
 		}
 	});
 
-	function checkWin(room, user, enemy) {
+	function fistFightCheckWin(room, user, enemy) {
 		if(enemy.breath <= 0) {
 			room.gameStart = false;
 			io.sockets.to(`room${room.name}`).emit('fistFight end', { winner: user });
@@ -133,7 +133,7 @@ io.sockets.on('connection', socket => {
 		enemyUser.def = '';
 		currentRoom.game.turn = enemyUser._id;
 
-		checkWin(currentRoom, currentUser, enemyUser);
+		fistFightCheckWin(currentRoom, currentUser, enemyUser);
 		io.sockets.to(`room${currentRoom.name}`).emit('fistFight refresh', { users: currentRoom.users, game: currentRoom.game });
 	}
 
@@ -177,6 +177,28 @@ io.sockets.on('connection', socket => {
 			currentRoom.game.info = `${currentUser.username} защищается!`;
 
 			io.sockets.to(`room${currentRoom.name}`).emit('fistFight refresh', { users: currentRoom.users, game: currentRoom.game });
+		}
+	});
+
+	socket.on('connectFour setBrick', data => {
+		const currentRoom = rooms.find(room => room.users.find(user => user._id === data.user._id));
+
+		if(currentRoom) {
+			const currentUser = currentRoom.users.find(user => user._id === data.user._id);
+			const enemyUser = currentRoom.users.find(user => user._id !== data.user._id);
+
+			currentRoom.game.table = data.game.table;
+			currentRoom.game.turn = enemyUser._id;
+
+			io.sockets.to(`room${currentRoom.name}`).emit('connectFour refresh', { game: currentRoom.game });
+		}
+	});
+
+	socket.on('connectFour end', data => {
+		const currentRoom = rooms.find(room => room.users.find(user => user._id === data.user._id));
+
+		if(currentRoom) {
+			currentRoom.gameStart = false;
 		}
 	});
 });

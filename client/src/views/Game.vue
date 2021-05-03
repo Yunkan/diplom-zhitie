@@ -1,14 +1,13 @@
 <template>
 	<div class="game-container">
 		<FistFight v-if="game.gameType === 'Кулачный бой' && users.length === 2" :initialUsers="users"></FistFight>
+		<ConnectFour v-if="game.gameType === '4 в ряд' && users.length === 2" :initialUsers="users"></ConnectFour>
 
 		<div class="result-modal" v-if="result.title">
-			<div class="modal-overlay">
-				<div class="modal">
-					<h1>{{ result.title }}</h1>
-					<div v-for="stat in result.stats">{{ statTranslate(stat.name) }}: {{ stat.value }}</div>
-					<PrimaryButton title="Понимаю" v-on:click="goBack"></PrimaryButton>
-				</div>
+			<div class="modal">
+				<h1>{{ result.title }}</h1>
+				<div v-for="stat in result.stats">{{ statTranslate(stat.name) }}: {{ stat.value }}</div>
+				<PrimaryButton title="Понимаю" v-on:click="goBack"></PrimaryButton>
 			</div>
 		</div>
 	</div>
@@ -23,26 +22,21 @@
 		left: 0;
 		right: 0;
 
-		.modal-overlay {
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, .5);
-
-			.modal {
-				background-color: #AB663C;
-				color: #fff;
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				padding: 1em;
-			}
+		.modal {
+			background-color: #AB663C;
+			color: #fff;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			padding: 1em;
 		}
 	}
 </style>
 <script>
 import { bus } from '../main.js';
 const FistFight = () => import('../components/games/FistFight.vue');
+const ConnectFour = () => import('../components/games/ConnectFour.vue');
 const PrimaryButton = () => import('../components/PrimaryButton.vue');
 export default {
 	data() {
@@ -65,7 +59,7 @@ export default {
 			this.game = data.game;
 		});
 
-		bus.$on('fistFight end', async data => {
+		bus.$on('game end', async data => {
 			this.result.title = data.title;
 			this.result.stats = data.stats;
 
@@ -95,7 +89,7 @@ export default {
 		}
 	},
 	 components: {
-	 	FistFight, PrimaryButton
+	 	FistFight, PrimaryButton, ConnectFour
 	 }
 }
 </script>

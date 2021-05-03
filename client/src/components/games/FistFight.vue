@@ -82,9 +82,9 @@ export default {
 					{ name: 'rating', value: 10 },
 					{ name: 'money', value: 20 }
 				];
-				title = 'Противник бежал!!';
+				title = 'Противник бежал!';
 			}
-			bus.$emit('fistFight end', { stats, title });
+			bus.$emit('game end', { stats, title });
 		});
 		this.$socket.client.emit('fistFight start', this.$store.getters.getUser);
 		this.$socket.client.on('fistFight refresh', data => {

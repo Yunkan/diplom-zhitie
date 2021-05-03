@@ -4,6 +4,7 @@
 			<label for="gameType">Игра</label>
 			<select v-model="currentGame.gameType" id="gameType">
 				<option value="Кулачный бой">Кулачный бой</option>
+				<option value="4 в ряд">4 в ряд</option>
 			</select>
 			<PrimaryButton title="Создать" v-on:click="createGame"></PrimaryButton>
 		</div>
