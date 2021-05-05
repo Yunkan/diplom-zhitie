@@ -94,7 +94,7 @@ export default {
 					{ name: 'rating', value: -1 },
 				]);
 			} else {
-				this.status.text = 'Вас поймали!';
+				this.status.text = 'Тебя поймали!';
 				this.status.color = '#f00';
 				await this.$store.dispatch('userStat', [
 					{ name: 'starve', value: -3 },
@@ -117,7 +117,7 @@ export default {
 					{ name: 'rating', value: -1 },
 				]);
 			} else {
-				this.status.text = 'Вас прогнали!';
+				this.status.text = 'Тебя прогнали!';
 				this.status.color = '#f00';
 				await this.$store.dispatch('userStat', [
 					{ name: 'starve', value: -2 },
