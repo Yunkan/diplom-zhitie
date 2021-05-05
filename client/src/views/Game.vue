@@ -1,8 +1,15 @@
 <template>
 	<div class="game-container">
-		<FistFight v-if="game.gameType === 'Кулачный бой' && users.length === 2" :initialUsers="users"></FistFight>
-		<ConnectFour v-if="game.gameType === '4 в ряд' && users.length === 2" :initialUsers="users"></ConnectFour>
-
+		<div v-if="game.gameType === 'Кулачный бой' && users.length === 2">
+			<FistFight :initialUsers="users"></FistFight>
+		</div>
+		<div v-else-if="game.gameType === '4 в ряд' && users.length === 2">
+			<ConnectFour :initialUsers="users"></ConnectFour>
+		</div>
+		<div v-else>
+			<h1>Ну, подождём...</h1>
+		</div>
+		
 		<div class="result-modal" v-if="result.title">
 			<div class="modal">
 				<h1>{{ result.title }}</h1>

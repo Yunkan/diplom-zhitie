@@ -13,7 +13,7 @@
 			<Footer></Footer>
 			<div class="game-over-container" v-if="dead">
 				<div class="text-container">
-					<h1>Вы умерли!</h1>
+					<h1>Ты умер!</h1>
 					<PrimaryButton title="Понимаю" v-on:click="acceptDeath"></PrimaryButton>
 				</div>
 			</div>
