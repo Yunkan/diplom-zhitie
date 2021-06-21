@@ -85,7 +85,7 @@ io.sockets.on('connection', socket => {
 
 			if(currentRoom.users.length <= 0) {
 				rooms = rooms.filter(room => room.name !== currentRoom.name);
-				await Game.findOneAndDelete({ _id: currentRoom.name });
+				await Game.deleteOne({ _id: currentRoom.name });
 
 				io.sockets.emit('remove game', currentRoom);
 			}
